@@ -80,7 +80,7 @@ func main() {
 		{49, 48, 50},
 		{50, 49},
 	}*/
-	//Epected output: 25
+	//Expected output: 25
 
 	/*people = [][]int{
 		{0, 2},
@@ -101,63 +101,63 @@ func main() {
 		{9, 10},
 		{10, 9},
 	}
+
+	people = [][]int{
+		{0, 1},
+		{1, 0, 2},
+		{2, 1, 3},
+		{3, 2, 4, 18},
+		{4, 3, 5},
+		{5, 4, 6},
+		{6, 5, 7},
+		{7, 6, 8},
+		{8, 7, 9},
+		{9, 8, 10},
+		{10, 9, 11},
+		{11, 10, 12},
+		{12, 11, 13},
+		{13, 12, 14},
+		{14, 13, 15},
+		{15, 14, 16},
+		{16, 15, 17},
+		{17, 16, 18},
+		{18, 17, 3, 19},
+		{19, 18}}
+	//expected output: 3
+
 	fmt.Println(people)
 	fmt.Println("result: ", plagueInc(people))
 }
 
-func plagueInc(people [][]int) int {
-	var deep int
-	var maxDeep int
-	var maxInfected int
-	var infected map[int]bool
-	results := make(map[int]int)
+// BFS-based solution
+func plagueInc(p [][]int) int {
+	n := len(p)
+	// output, best distance
+	o, b := -1, n
+	for i := range p {
+		// enqueue i
+		que := []int{i}
+		visited := make([]bool,len(p))
+		// step, left to visit
+		s, v := -2, n
 
-	var touch func(p int) bool
-	touch = func(p int) bool {
-		deep++
-		infected[p] = true
-		fmt.Println("infected: ", infected)
-		fmt.Println("deep: ", deep)
-		if deep > maxDeep {
-			maxDeep = deep
-		}
-		for i := 1; i < len(people[p]); i++ {
-			fmt.Println("p: ", p, people[p][i])
-			if !infected[people[p][i]] {
-				touch(people[p][i])
+		// iterate until nothing left to visit
+		for v > 0 && s < b - 1 {
+			// visit every node in the queue that hasn't been visited
+			for _, f := range que {
+				if !visited[f] {
+					visited[f] = true
+					v--
+					que = append(que, p[f]...)
+				}
+				que = que[1:]
 			}
+			s++
 		}
-		deep--
-		return false
-	}
-
-	for i := 0; i < len(people); i++ {
-		fmt.Println("start i:", i)
-		deep = 0
-		maxDeep = 0
-		infected = make(map[int]bool)
-		touch(i)
-		if maxInfected < len(infected) {
-			maxInfected = len(infected)
-		}
-		results[i] = maxDeep
-	}
-
-	if maxInfected < len(people) {
-		return -1
-	}
-
-	fmt.Println("results: ", results)
-
-	//select minimum
-	min := 36555
-	var minIdx int
-	for i := 0; i < len(results); i++ {
-		if results[i] < min {
-			min = results[i]
-			minIdx = i
+		if v < 1 {
+			b = s
+			o = i
 		}
 	}
-
-	return minIdx
+	return o
 }
