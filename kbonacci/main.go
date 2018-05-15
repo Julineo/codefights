@@ -19,7 +19,7 @@ import (
 var (
 	m          map[int]int
 	nCacheHits int
-	k	= 40
+	k	= 10000
 	n       = 25000
 )
 
@@ -37,10 +37,17 @@ func do2() {
 	fmt.Printf("res: %d, time: %s, cache hits: %d\n", res, time.Since(timeStart), nCacheHits)
 }
 
+func do3(){
+	timeStart := time.Now()
+	res := kbonacciB(k, n)
+	fmt.Printf("res: %d, time: %s\n", res, time.Since(timeStart))
+	}
+
 func main() {
 	fmt.Printf("Running for n=%d\n", n)
 	//do1()
-	do2()
+	//do2()
+	do3()
 }
 
 func kbonaccim(k int, n int) string {
@@ -92,4 +99,23 @@ func kbonacci(k int, n int) string {
 		return m[n]
 	}
 	return strconv.Itoa(helper(k, n))
+}
+
+//borrowed solution, works faster
+func kbonacciB(k int, n int) string {
+	b := big.NewInt
+
+	a := make([]*big.Int, k+1)
+
+	for i:=0; i<k; i++ {
+		a[i] = b(1)
+	}
+
+	a[k] = b(int64(k))
+
+	for i:=k; i<=n; i++ {
+		a = append(a[1:], b(0).Add(a[k], b(0).Sub(a[k], a[0])))
+	}
+
+	return a[len(a)-2].String()
 }
