@@ -13,7 +13,7 @@ addBorder(picture) = ["*****",
                       "*ded*",
                       "*****"]*/
 
-import "strings"
+import . "strings"
 
 func addBorder(picture []string) []string {
     //left and right borders
@@ -22,7 +22,7 @@ func addBorder(picture []string) []string {
     }
 
     //lower border and upper border
-    s := strings.Repeat("*", len(picture[0]))
+    s := Repeat("*", len(picture[0]))
     picture = append(picture, s)
     picture = append([]string{s}, picture...)
 
