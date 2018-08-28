@@ -15,6 +15,20 @@ For cell = "c2", the output should be
 chessKnight(cell) = 6.
 */
 func chessKnight(cell string) (r int) {
+    x := int(cell[0] - 96)
+    y := int(cell[1] - 48)
+    sl := [][]int{{1, 2},{2, 1},{2, -1},{1, -2},{-1, -2},{-2, -1},{-2, 1},{-1, 2},}
+    for i := 0; i < 8; i++ {
+        if x + sl[i][0] > 0 &&
+            y + sl[i][1] > 0 &&
+            x + sl[i][0] < 9 &&
+            y + sl[i][1] < 9 { r++ }
+    }
+    return
+}
+
+/*
+func chessKnight(cell string) (r int) {
     x := cell[0] - 96
     y := cell[1] - 48
         if x + 1 > 0 && y + 2 > 0 && x + 1 < 9 && y + 2 < 9 {r++}
@@ -27,3 +41,4 @@ func chessKnight(cell string) (r int) {
         if x - 1 > 0 && y + 2 > 0 && x - 1 < 9 && y + 2 < 9 {r++}
     return
 }
+*/
