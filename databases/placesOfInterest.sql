@@ -36,6 +36,19 @@ Sweden	0		0	3		0
 
 CREATE PROCEDURE placesOfInterest()
 BEGIN
+       select country,
+                  sum( if(leisure_activity_type = 'Adventure park', number_of_places, 0)) as adventure_park,
+                  sum( if(leisure_activity_type = 'Golf', number_of_places, 0)) as golf,
+                  sum( if(leisure_activity_type = 'River cruise', number_of_places, 0)) as river_cruise,
+                  sum( if(leisure_activity_type = 'Kart racing', number_of_places, 0)) as kart_racing
+       from countryActivities
+       group by country;
+
+END
+
+/*
+CREATE PROCEDURE placesOfInterest()
+BEGIN
        SELECT country,
        coalesce(SUM(adventure_park), 0) as adventure_park,
        coalesce(SUM(golf), 0) as golf,
@@ -50,3 +63,4 @@ BEGIN
               FROM countryActivities) b
        GROUP BY country;
 END
+*/
