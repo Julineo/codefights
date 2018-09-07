@@ -44,10 +44,9 @@ In the table expenditure_plan, the Mondays correspond to the weeks with numbers 
 
 CREATE PROCEDURE checkExpenditure()
 BEGIN
-	SELECT e.id, IF(SUM(expenditure_sum) - e.value > 0, SUM(expenditure_sum) - e.value, 0) AS loss
+	SELECT e.id, GREATEST(SUM(expenditure_sum) - e.value, 0) AS loss
     FROM expenditure_plan p
     JOIN allowable_expenditure e 
     ON WEEK(monday_date) BETWEEN left_bound AND right_bound
-    GROUP BY e.id
-    ;
+    GROUP BY e.id;
 END
