@@ -121,36 +121,17 @@ func betterOrderTraversal(root *tree.Tree) []int {
     inOrderTr(root)
     preOrderTr(root)
     postOrderTr(root)
-	fmt.Println(a1)
+	fmt.Println(a2)
 	fmt.Println(a2)
 	fmt.Println(a3)
 
-    f1, f2, f3 := true, true, true
-    for i := range a1 {
-        if f1 && f2 && f3 {
-            if a2[i] < a1[i] || a3[i] < a1[i] { f1 = false }
-            if a3[i] < a2[i] || a1[i] < a2[i] { f2 = false }
-            if a1[i] < a3[i] || a2[i] < a3[i] { f3 = false }
-        }
-
-        if f2 && f3 {
-            if a3[i] < a2[i] { f2 = false }
-            if a2[i] < a3[i] { f3 = false }
-        }
-        if f1 && f3 {
-            if a3[i] < a1[i] { f1 = false }
-            if a1[i] < a3[i] { f3 = false }
-        }
-        if f1 && f2 {
-            if a2[i] < a1[i] { f1 = false }
-            if a1[i] < a2[i] { f2 = false }
-        }
-
-        if f3 && !f1 && !f2 { return a3 }
-        if f1 && !f2 && !f3 { return a1 }
-        if f2 && !f1 && !f3 { return a2 }
-    }
-
-    return a1
+    return min(a1, min(a2, a3))
 }
 
+func min (a, b []int) []int {
+    for i := range a {
+        if a[i] < b[i] { return a }
+        if b[i] < a[i] { return b }
+    }
+    return a
+}
