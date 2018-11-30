@@ -53,6 +53,7 @@ package main
 
 import (
 	"fmt"
+	"sync"
 
 	"golang.org/x/tour/tree"
 )
@@ -66,6 +67,8 @@ func betterOrderTraversal(root *tree.Tree) []int {
     a1 := []int{}
     a2 := []int{}
     a3 := []int{}
+
+    var wg sync.WaitGroup
 
     var inOrderTr func(root *tree.Tree)
     inOrderTr = func(root *tree.Tree) {
@@ -118,13 +121,22 @@ func betterOrderTraversal(root *tree.Tree) []int {
         a3 = append(a3, root.Value)
     }
 
-    inOrderTr(root)
-    preOrderTr(root)
-    postOrderTr(root)
-	fmt.Println(a2)
-	fmt.Println(a2)
-	fmt.Println(a3)
+    wg.Add(3)
 
+    go func() {
+        inOrderTr(root)
+        wg.Done()
+    }()
+    go func() {
+        preOrderTr(root)
+        wg.Done()
+    }()
+    go func() {
+        postOrderTr(root)
+        wg.Done()
+    }()
+
+    wg.Wait()
     return min(a1, min(a2, a3))
 }
 
